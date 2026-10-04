@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Кабинет{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Управление сайтом</p>
+        <h1>Кабинет</h1>
+        <p class="lead">После входа можно создавать, изменять и удалять страницы, а также добавлять и убирать фотографии.</p>
+    </div>
+</section>
+<section class="section">
+    <div class="container cards">
+        <article class="card">
+            <h3>Страницы</h3>
+            <p>Сейчас на сайте: {{ pages_count }}</p>
+            <p><a class="btn btn--accent" href="{% url 'club:page_list' %}">Редактировать</a></p>
+        </article>
+        <article class="card">
+            <h3>Фотографии</h3>
+            <p>В разделе «Наши работы»: {{ photos_count }}</p>
+            <p><a class="btn btn--accent" href="{% url 'club:gallery_manage' %}">Добавить / удалить</a></p>
+        </article>
+        <article class="card">
+            <h3>Заявки на ТО</h3>
+            <p>Новых сообщений: {{ messages_count }}</p>
+            <p><a class="btn btn--accent" href="{% url 'club:feedback_list' %}">Открыть</a></p>
+        </article>
+    </div>
+</section>
+{% endblock %}

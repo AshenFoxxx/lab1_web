@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Маяк{% endblock %} — страйкбольная мастерская</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+</head>
+<body>
+    <header class="header">
+        <div class="container header__inner">
+            <a class="logo" href="{% url 'club:home' %}">
+                <span class="logo__mark">M</span>
+                <span class="logo__text">Маяк<span>airsoft workshop</span></span>
+            </a>
+            <button class="nav-toggle" type="button" aria-label="Открыть меню">☰</button>
+            <nav class="nav" id="site-nav">
+                {% for item in menu_pages %}
+                    <a href="{{ item.get_absolute_url }}" class="{% if page and page.pk == item.pk %}is-active{% endif %}">{{ item.title }}</a>
+                {% endfor %}
+                {% if user.is_authenticated %}
+                    <a href="{% url 'club:dashboard' %}">Кабинет</a>
+                    <a href="{% url 'club:page_list' %}">Страницы</a>
+                    <a href="{% url 'club:gallery_manage' %}">Фото</a>
+                    <a href="{% url 'club:feedback_list' %}">Заявки</a>
+                    <form method="post" action="{% url 'club:logout' %}" class="nav-form">
+                        {% csrf_token %}
+                        <button type="submit">Выйти</button>
+                    </form>
+                {% else %}
+                    <a class="nav-login" href="{% url 'club:login' %}">Войти</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    {% if messages %}
+        <div class="flash-wrap">
+            {% for message in messages %}
+                <div class="flash flash--{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container footer__grid">
+            <div>
+                <div class="logo logo--footer">
+                    <span class="logo__mark">M</span>
+                    <span class="logo__text">Маяк<span>airsoft workshop</span></span>
+                </div>
+                <p>Страйкбольная мастерская: ТО приводов, переборка гирбоксов, замена комплектующих, хоп-ап и электрика.</p>
+            </div>
+            <div>
+                <h3>Навигация</h3>
+                {% for item in menu_pages %}
+                    <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                {% endfor %}
+            </div>
+            <div>
+                <h3>Контакты</h3>
+                <p>Обнинск, проспект Маркса, 83</p>
+                <p>+7 (960) 514-88-52</p>
+                <p>mayakairsft@gmail.com</p>
+                <p>Пн–Сб: 11:00–21:00</p>
+            </div>
+        </div>
+        <div class="container footer__copy">
+            <span>© {% now "Y" %} Мастерская «Маяк»</span>
+            <a href="{% url 'club:home' %}">На главную</a>
+        </div>
+    </footer>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

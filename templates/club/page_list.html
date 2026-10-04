@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Страницы сайта{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Кабинет</p>
+        <h1>Страницы сайта</h1>
+        <p class="lead">Здесь можно создать раздел, изменить текст или удалить страницу. После входа эти кнопки видит только авторизованный пользователь.</p>
+        <a class="btn btn--accent" href="{% url 'club:page_create' %}">Новая страница</a>
+        {% if not has_services %}
+            <form method="post" action="{% url 'club:restore_services' %}" class="nav-form" style="display:inline">
+                {% csrf_token %}
+                <button class="btn btn--ghost" type="submit">Вернуть «Услуги»</button>
+            </form>
+        {% endif %}
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Страница</th>
+                    <th>В меню</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in pages %}
+                    <tr>
+                        <td><a href="{{ item.get_absolute_url }}">{{ item.title }}</a></td>
+                        <td>{% if item.show_in_menu %}да{% else %}нет{% endif %}</td>
+                        <td class="table-actions">
+                            <a class="btn btn--small" href="{% url 'club:page_edit' item.pk %}">Изменить</a>
+                            <form method="post" action="{% url 'club:page_delete' item.pk %}" onsubmit="return confirm('Удалить страницу «{{ item.title }}»?');">
+                                {% csrf_token %}
+                                <button class="btn btn--small btn--danger" type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

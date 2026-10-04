@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Обратная связь{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Сдать привод</p>
+        <h1>{{ page.title }}</h1>
+        <p class="lead">{{ page.subtitle }}</p>
+        {% if user.is_authenticated and page %}
+            <a class="edit-link" href="{% url 'club:page_edit' page.pk %}">Редактировать страницу</a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="container narrow">
+        <p>{{ page.content|safe }}</p>
+        <div class="panel">
+            <form method="post" class="form-grid">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn--accent" type="submit">Отправить</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

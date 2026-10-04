@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Наши работы{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Портфолио</p>
+        <h1>{{ page.title }}</h1>
+        {% if user.is_authenticated %}
+            <a class="btn btn--accent" href="{% url 'club:gallery_manage' %}">Добавить или удалить фото</a>
+            {% if page %}
+                <a class="edit-link" href="{% url 'club:page_edit' page.pk %}">Редактировать заголовок</a>
+            {% endif %}
+        {% endif %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="gallery-collage">
+            {% for image in images %}
+                <figure class="gallery-item">
+                    <img src="{{ image.src }}" alt="">
+                    {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'club:gallery_delete' image.pk %}" class="gallery-delete" onsubmit="return confirm('Удалить фотографию?');">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{% url 'club:gallery' %}">
+                            <button class="btn btn--small btn--danger" type="submit">Удалить</button>
+                        </form>
+                    {% endif %}
+                </figure>
+            {% empty %}
+                <p>Пока нет фотографий.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

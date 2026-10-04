@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Главная{% endblock %}
+{% block content %}
+<section class="hero">
+    <div class="hero__media"></div>
+    <div class="container hero__content">
+        <p class="eyebrow">Обнинск · проспект Маркса, 83</p>
+        <h1>Привод должен ходить тихо и бить ровно.</h1>
+        <p class="lead">{{ page.subtitle|default:"ТО, гирбоксы и комплектующие в одной мастерской." }}</p>
+        <div class="hero__actions">
+            <a class="btn btn--accent" href="{% url 'club:feedback' %}">Записаться на ТО</a>
+            <a class="btn btn--ghost" href="/p/services/">Смотреть прайс</a>
+        </div>
+        {% if user.is_authenticated and page %}
+            <a class="edit-link" href="{% url 'club:page_edit' page.pk %}">Редактировать главную</a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="section-head">
+            <h2>Что делаем в мастерской</h2>
+            <p>{{ page.content }}</p>
+        </div>
+        <div class="cards">
+            <article class="card">
+                <img src="{% static 'img/card-to.png' %}" alt="ТО привода">
+                <h3>ТО привода</h3>
+                <p>Чистка, смазка, шиммовка, выставление AOE и компрессия. Плановое обслуживание после сезона или шумной игры.</p>
+            </article>
+            <article class="card">
+                <img src="{% static 'img/card-gearbox.jpg' %}" alt="Гирбоксы">
+                <h3>Гирбоксы</h3>
+                <p>Переборка V2/V3, DSG, high-speed и high-torque. Шестерни, поршень, голова цилиндра, антиреверс.</p>
+            </article>
+            <article class="card">
+                <img src="{% static 'img/card-parts.jpg' %}" alt="Комплектующие">
+                <h3>Комплектующие</h3>
+                <p>Моторы, пружины, камеры хоп-апа, резинки, стволики 6.03, MOSFET и проводка под LiPo.</p>
+            </article>
+            <article class="card">
+                <img src="{% static 'img/card-furniture.jpg' %}" alt="Обвес">
+                <h3>Обвес</h3>
+                <p>Цевьё, приклады, рукоятки, прицелы, ЛЦУ и фонари. Подгоняем обвес под корпус и ставим под ключ.</p>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section section--alt">
+    <div class="container split">
+        <div>
+            <div class="section-head">
+                <h2>Что входит в полное ТО</h2>
+                <p>Типовой регламент для AEG. Для GBB и HPA составляем отдельный список работ.</p>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Этап</th>
+                        <th>Гирбокс</th>
+                        <th>Хоп-ап / ствол</th>
+                        <th>Электрика</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Диагностика</td><td>Люфт шестерней, AOE</td><td>Камера, резинка</td><td>Прозвон, нагрев</td></tr>
+                    <tr><td>Чистка</td><td>Корпус, шестерни, поршень</td><td>Стволик, камера</td><td>Контакты, разъём</td></tr>
+                    <tr><td>Сборка</td><td>Шиммы, смазка, пружина</td><td>Нубук, герметизация</td><td>Предохранитель</td></tr>
+                    <tr><td>Проверка</td><td>Холостой ход, шум</td><td>Отстрел, кучность</td><td>Замер на хроно</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="video-card">
+            <h2>Как разбираем гирбокс</h2>
+            <p>Ролик по шиммовке и сборке V3 — так выглядит типичная работа на верстаке.</p>
+            <div class="video-wrap">
+                <iframe src="https://www.youtube.com/embed/d_fBV67r98U" title="Как разбираем гирбокс" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

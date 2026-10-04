@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Сообщения{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Кабинет</p>
+        <h1>Заявки на ТО</h1>
+        <p class="lead">Сообщения с формы видят только авторизованные пользователи.</p>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Имя</th>
+                    <th>Email</th>
+                    <th>Телефон</th>
+                    <th>Сообщение</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.created_at|date:"d.m.Y H:i" }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.phone|default:"—" }}</td>
+                        <td>{{ item.message }}</td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="5">Пока нет сообщений.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Страница мастерской</p>
+        <h1>{{ page.title }}</h1>
+        {% if page.subtitle %}<p class="lead">{{ page.subtitle }}</p>{% endif %}
+        {% if user.is_authenticated %}
+            <a class="edit-link" href="{% url 'club:page_edit' page.pk %}">Редактировать</a>
+        {% endif %}
+    </div>
+</section>
+<section class="section">
+    <div class="container content-block">
+        {{ page.content|safe }}
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'club:page_delete' page.pk %}" onsubmit="return confirm('Удалить эту страницу?');">
+                {% csrf_token %}
+                <button class="btn btn--danger" type="submit">Удалить страницу</button>
+            </form>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

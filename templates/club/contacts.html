@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Контакты{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Мастерская</p>
+        <h1>{{ page.title }}</h1>
+        {% if page.subtitle %}<p class="lead">{{ page.subtitle }}</p>{% endif %}
+        {% if user.is_authenticated and page %}
+            <a class="edit-link" href="{% url 'club:page_edit' page.pk %}">Редактировать страницу</a>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section">
+    <div class="container split">
+        <div class="content-block">
+            {{ page.content|safe }}
+        </div>
+        <div class="map-wrap">
+            <iframe title="Карта мастерской" src="https://www.openstreetmap.org/export/embed.html?bbox=36.597%2C55.118%2C36.618%2C55.128&amp;layer=mapnik&amp;marker=55.1231%2C36.6075"></iframe>
+        </div>
+    </div>
+</section>
+{% endblock %}

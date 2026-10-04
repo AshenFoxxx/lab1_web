@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Фотографии{% endblock %}
+{% block content %}
+<section class="page-hero">
+    <div class="container">
+        <p class="eyebrow">Кабинет</p>
+        <h1>Фотографии</h1>
+        <p class="lead">Загрузите снимок с компьютера или удалите лишний. Изменения сразу видны в «Наших работах».</p>
+        <a class="btn btn--ghost" href="{% url 'club:gallery' %}">Смотреть на сайте</a>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="panel">
+            <h2>Добавить фото</h2>
+            <form method="post" action="{% url 'club:gallery_add' %}" enctype="multipart/form-data" class="form-grid">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{% url 'club:gallery_manage' %}">
+                {{ form.as_p }}
+                <button class="btn btn--accent" type="submit">Загрузить</button>
+            </form>
+        </div>
+
+        <div class="gallery-admin">
+            {% for image in images %}
+                <figure class="gallery-admin__item">
+                    <img src="{{ image.src }}" alt="">
+                    <form method="post" action="{% url 'club:gallery_delete' image.pk %}" onsubmit="return confirm('Удалить это фото?');">
+                        {% csrf_token %}
+                        <input type="hidden" name="next" value="{% url 'club:gallery_manage' %}">
+                        <button class="btn btn--small btn--danger" type="submit">Удалить</button>
+                    </form>
+                </figure>
+            {% empty %}
+                <p>Фотографий пока нет.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
