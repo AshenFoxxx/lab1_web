@@ -1,0 +1,17 @@
+name: mayak
+
+services:
+  web:
+    build: .
+    container_name: mayak-web
+    ports:
+      - "8000:8000"
+    environment:
+      SQLITE_PATH: /app/data/db.sqlite3
+      MEDIA_ROOT: /app/data/media
+    volumes:
+      - mayak_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  mayak_data:

@@ -51,3 +51,17 @@ python manage.py run_scheduled
 Кабинет после входа: http://127.0.0.1:8000/manage/ — логин `admin`, пароль `admin123`.
 
 Отчёт: `Отчет_ЛР2.docx`.
+
+## Лабораторная работа 3
+
+Сайт запускается в контейнере через Docker Compose. Образ собирается из `Dockerfile`, сервис описан в `docker-compose.yml`. База SQLite и загруженные фото хранятся в томе `mayak_data`.
+
+```bash
+docker compose up --build
+```
+
+Сайт открывается на http://127.0.0.1:8000/ — те же логины, что и при обычном запуске.
+
+Остановить контейнер: `docker compose down`.
+
+Отчёт: `Отчет_ЛР3.docx`.
