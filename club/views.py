@@ -5,12 +5,14 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.text import slugify
 from django.views.decorators.http import require_POST
 
+from .caching import benchmark_home, get_benchmark, get_gallery_images, get_page
 from .forms import FeedbackForm, GalleryImageForm, LoginForm, PageForm, RegisterForm
-from .models import FeedbackMessage, GalleryImage, Page
+from .jobs import run_scheduled_jobs
+from .models import DailyReminder, FeedbackMessage, GalleryImage, Page
 
 
 def _page(page_type):
-    return Page.objects.filter(page_type=page_type).first()
+    return get_page(page_type)
 
 
 def home(request):
@@ -25,7 +27,7 @@ def gallery(request):
     form = GalleryImageForm() if request.user.is_authenticated else None
     return render(request, 'club/gallery.html', {
         'page': _page(Page.GALLERY),
-        'images': GalleryImage.objects.all(),
+        'images': get_gallery_images(),
         'form': form,
     })
 
@@ -102,7 +104,35 @@ def dashboard(request):
         'pages_count': Page.objects.count(),
         'photos_count': GalleryImage.objects.count(),
         'messages_count': FeedbackMessage.objects.count(),
+        'reminder': DailyReminder.objects.order_by('-day').first(),
+        'benchmark': get_benchmark(),
     })
+
+
+@login_required
+@require_POST
+def run_scheduler_view(request):
+    reminder, deleted = run_scheduled_jobs()
+    messages.success(
+        request,
+        f'{reminder.text} Удалено прочитанных заявок старше 30 дней: {deleted}.',
+    )
+    return redirect('club:dashboard')
+
+
+@login_required
+@require_POST
+def benchmark_cache_view(request):
+    result = benchmark_home()
+    faster = ''
+    if result['faster']:
+        faster = f' С кэшем быстрее в {result["faster"]} раз.'
+    messages.success(
+        request,
+        f'Без кэша: {result["cold_ms"]} мс. С кэшем: {result["warm_ms"]} мс '
+        f'({result["repeats"]} сборок данных главной).{faster}',
+    )
+    return redirect('club:dashboard')
 
 
 @login_required

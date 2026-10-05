@@ -72,6 +72,20 @@ class GalleryImage(models.Model):
         return self.image_url
 
 
+class DailyReminder(models.Model):
+    day = models.DateField('День', unique=True)
+    text = models.CharField('Текст', max_length=400)
+    created_at = models.DateTimeField('Создано', auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Напоминание'
+        verbose_name_plural = 'Напоминания планировщика'
+        ordering = ['-day']
+
+    def __str__(self):
+        return self.text
+
+
 class FeedbackMessage(models.Model):
     name = models.CharField('Имя', max_length=100)
     email = models.EmailField('Email')

@@ -34,3 +34,20 @@ python manage.py runserver
 - Django ORM + SQLite
 - Django Templates
 - `django.contrib.auth`
+
+## Лабораторная работа 2
+
+На том же сайте добавлены планировщик, кэширование и тесты.
+
+- **Планировщик.** APScheduler каждый день в 09:00 напоминает о непрочитанных заявках и удаляет прочитанные заявки старше 30 дней (`club/scheduler.py`, `club/jobs.py`).
+- **Кэш.** Меню, страницы и фотографии кэшируются на 2 минуты (`club/caching.py`). В кабинете кнопка «Замерить» показывает время с кэшем и без.
+- **Тесты.** `python manage.py test`
+
+```bash
+python manage.py test
+python manage.py run_scheduled
+```
+
+Кабинет после входа: http://127.0.0.1:8000/manage/ — логин `admin`, пароль `admin123`.
+
+Отчёт: `Отчет_ЛР2.docx`.

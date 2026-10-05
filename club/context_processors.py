@@ -1,7 +1,7 @@
-from .models import Page
+from .caching import get_menu_pages
 
 
 def menu_pages(request):
     return {
-        'menu_pages': Page.objects.filter(show_in_menu=True),
+        'menu_pages': get_menu_pages(),
     }

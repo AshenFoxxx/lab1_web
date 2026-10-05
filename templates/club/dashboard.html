@@ -26,5 +26,35 @@
             <p><a class="btn btn--accent" href="{% url 'club:feedback_list' %}">Открыть</a></p>
         </article>
     </div>
+
+    <div class="container section-gap">
+        <p class="eyebrow">Лабораторная работа 2</p>
+        <h2>Расписание и кэш</h2>
+    </div>
+    <div class="container cards cards--3">
+        <article class="card">
+            <h3>Планировщик</h3>
+            <p>Каждый день в 09:00: напоминание о непрочитанных заявках и удаление прочитанных заявок старше 30 дней.</p>
+            <p>{% if reminder %}{{ reminder.text }}{% else %}Сегодня ещё не запускался.{% endif %}</p>
+            <form method="post" action="{% url 'club:run_scheduler' %}">
+                {% csrf_token %}
+                <button class="btn btn--accent" type="submit">Выполнить сейчас</button>
+            </form>
+        </article>
+        <article class="card">
+            <h3>Кэш</h3>
+            {% if benchmark %}
+                <p>Без кэша: {{ benchmark.cold_ms }} мс</p>
+                <p>С кэшем: {{ benchmark.warm_ms }} мс</p>
+                <p>{{ benchmark.repeats }} сборок данных главной{% if benchmark.faster %}, быстрее в {{ benchmark.faster }} раз{% endif %}.</p>
+            {% else %}
+                <p>Меню и страницы кэшируются на 2 минуты. Замер покажет разницу во времени.</p>
+            {% endif %}
+            <form method="post" action="{% url 'club:benchmark_cache' %}">
+                {% csrf_token %}
+                <button class="btn btn--accent" type="submit">Замерить</button>
+            </form>
+        </article>
+    </div>
 </section>
 {% endblock %}

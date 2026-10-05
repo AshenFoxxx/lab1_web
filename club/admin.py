@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import FeedbackMessage, GalleryImage, Page
+from .models import DailyReminder, FeedbackMessage, GalleryImage, Page
 
 
 @admin.register(Page)
@@ -20,3 +20,8 @@ class GalleryImageAdmin(admin.ModelAdmin):
 class FeedbackMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'is_read', 'created_at')
     list_filter = ('is_read',)
+
+
+@admin.register(DailyReminder)
+class DailyReminderAdmin(admin.ModelAdmin):
+    list_display = ('day', 'text')
